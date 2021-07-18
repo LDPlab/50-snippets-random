@@ -13,7 +13,7 @@ def get_output_file_name() -> str:
     filename = get_filename("Output")
 
     if filename.split('.')[-1] not in supported_extentions:
-        filename += ".xlsx"
+        filename += ".csv"
 
     return filename
 
