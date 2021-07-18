@@ -15,7 +15,7 @@ def get_files() -> dict:
     os.chdir("input")
     for file in os.listdir():
         split_filename = file.split('.')
-        split_filename[-2] += "_50_snippets"
+        split_filename[-2] += "_50snippets"
         split_filename[-1] = "xlsx"
         files_map[file] = '.'.join(split_filename)
 
