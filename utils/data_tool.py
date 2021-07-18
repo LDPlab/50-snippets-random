@@ -1,6 +1,9 @@
 import pandas as pd
+import os
+
 
 def get_data(filename: str) -> pd.DataFrame:
+    os.chdir("input")
     if filename[-4:] == ".csv":
         data = pd.read_csv(filename)
     elif filename[-4:] == ".xls" or filename[-5:] == ".xlsx":
@@ -15,13 +18,11 @@ def get_data(filename: str) -> pd.DataFrame:
     non_zero_awc_data.insert(3, "SegEnd", data[data.columns[2]] + 30)
     non_zero_awc_data.columns = ["Index", "Time", "SegStart", "SegEnd", "AWC"]
 
+    os.chdir("..")
     return non_zero_awc_data
 
 
 def write_output(data: pd.DataFrame, filename: str):
-    if filename[-4:] == ".csv":
-        data.to_csv(filename, index=False)
-    elif filename[-5:] == ".xlsx":
-        data.to_excel(filename, index=False)
-    else:
-        raise ValueError("File extension not supported")
+    os.chdir("output")
+    data.to_excel(filename, index=False)
+    os.chdir("..")
