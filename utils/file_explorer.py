@@ -7,7 +7,7 @@ def get_files() -> dict:
     if not os.path.isdir("output"):
         os.mkdir("output")
     if not os.path.isdir("input"):
-        print("Creating input folder, please place input files in and run again.")
+        print("\nCreating input folder, please place input files in and run again.")
         os.mkdir("input")
         input("Press any key to exit...")
         exit(0)

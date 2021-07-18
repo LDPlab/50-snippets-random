@@ -7,9 +7,8 @@ def main():
     print("Please ensure that the input files are in a folder labeled \"input\"")
     print("Supported input extensions: .xls, .xlsx, .csv | Default to .xls")
     print("Output extensions: .xlsx")
-    print()
-
     input("Press any key to start...")
+
     files = get_files()
 
 
