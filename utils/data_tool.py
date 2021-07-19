@@ -3,6 +3,17 @@ import os
 
 
 def get_data(filename: str) -> pd.DataFrame:
+    '''
+    Generates a Pandas DataFrame from input file. Filters out any rows with 0 mean adult word count.
+
+    Parameters:
+    filename : str
+        The filename to use to load DataFrame.
+
+    Returns:
+    Pandas DataFrame
+        A DataFrame of the files data with all rows containing 0 mean adult word count filtered out.
+    '''
     os.chdir("input")
     if filename[-4:] == ".csv":
         data = pd.read_csv(filename)
@@ -23,6 +34,15 @@ def get_data(filename: str) -> pd.DataFrame:
 
 
 def write_output(data: pd.DataFrame, filename: str):
+    '''
+    Writes the 50 random snippets to an excel sheet.
+
+    Parameters:
+    data : Pandas DataFrame
+        The 50 snippets to write out.
+    filename : str
+        The name of the output file.
+    '''
     os.chdir("output")
     data.to_excel(filename, index=False)
     os.chdir("..")

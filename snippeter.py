@@ -4,6 +4,10 @@ from utils.file_explorer import get_files
 
 
 def main():
+    '''
+    Main program for randomly sampling 50 non zero adult word count clips.
+    Controls execution flow for processing files and attempts to handle execution errors.
+    '''
     print("Please ensure that the input files are in a folder labeled \"input\"")
     print("Supported input extensions: .xls, .xlsx, .csv | Default to .xls")
     print("Output extensions: .xlsx")

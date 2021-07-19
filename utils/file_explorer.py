@@ -2,6 +2,18 @@ import os
 
 
 def get_files() -> dict:
+    '''
+    Searches through input directory for all files to process and creates a dictonary
+    where the keys are the input filename and the values are the output filename.
+    Appends _50snippets to all filenames and all output file extensions are .xlsx.
+
+    Example:
+    input_filename.xls >> input_filename_50snippets.xlsx
+
+    Returns
+    Dictionary
+        Dictionary of input filenames to process to output filenames to write.
+    '''
     files_map = {}
 
     if not os.path.isdir("output"):
