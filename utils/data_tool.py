@@ -4,7 +4,8 @@ import os
 
 def get_data(filename: str) -> pd.DataFrame:
     '''
-    Generates a Pandas DataFrame from input file. Filters out any rows with 0 mean adult word count.
+    Generates a Pandas DataFrame of the top 100 Adult Word Count [AWC] rows from input file.
+    May return rows that have 0 AWC.
 
     Parameters:
     filename : str
@@ -12,7 +13,7 @@ def get_data(filename: str) -> pd.DataFrame:
 
     Returns:
     Pandas DataFrame
-        A DataFrame of the files data with all rows containing 0 mean adult word count filtered out.
+        A DataFrame of the top 100 rows by AWC from file data.
     '''
     os.chdir("input")
     if filename[-4:] == ".csv":
@@ -25,12 +26,12 @@ def get_data(filename: str) -> pd.DataFrame:
     for col in data.columns[4:]:
         del data[col]
 
-    non_zero_awc_data = data[data[data.columns[3]] > 0]
-    non_zero_awc_data.insert(3, "SegEnd", data[data.columns[2]] + 30)
-    non_zero_awc_data.columns = ["Index", "Time", "SegStart", "SegEnd", "AWC"]
+    top_100_awc_data = data.sort_values(by=data.columns[3], ascending=False)[:100]
+    top_100_awc_data.insert(3, "SegEnd", data[data.columns[2]] + 30)
+    top_100_awc_data.columns = ["Index", "Time", "SegStart", "SegEnd", "AWC"]
 
     os.chdir("..")
-    return non_zero_awc_data
+    return top_100_awc_data
 
 
 def write_output(data: pd.DataFrame, filename: str):
