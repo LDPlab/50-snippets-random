@@ -2,18 +2,20 @@ import pandas as pd
 import os
 
 
-def get_data(filename: str) -> pd.DataFrame:
+def get_data(filename: str, is_random: bool) -> pd.DataFrame:
     '''
-    Generates a Pandas DataFrame of the top 100 Adult Word Count [AWC] rows from input file.
-    May return rows that have 0 AWC.
+    Generates a Pandas DataFrame from input file.
 
     Parameters:
     filename : str
         The filename to use to load DataFrame.
+    is_random : int
+        True: Sample from all nonzero AWC clips.
+        False: Sample from top 100 clips by AWC.
 
     Returns:
     Pandas DataFrame
-        A DataFrame of the top 100 rows by AWC from file data.
+        A DataFrame of clips by desired sampling method from file data.
     '''
     os.chdir("input")
     if filename[-4:] == ".csv":
@@ -26,12 +28,18 @@ def get_data(filename: str) -> pd.DataFrame:
     for col in data.columns[4:]:
         del data[col]
 
-    top_100_awc_data = data.sort_values(by=data.columns[3], ascending=False)[:100]
-    top_100_awc_data.insert(3, "SegEnd", data[data.columns[2]] + 30)
-    top_100_awc_data.columns = ["Index", "Time", "SegStart", "SegEnd", "AWC"]
+    if is_random:
+        print("Filtering out clips with 0 AWC...")
+        data = data[data[data.columns[3]] > 0]
+    else:
+        print("Getting top 100 clips by AWC...")
+        data = data.sort_values(by=data.columns[3], ascending=False)[:100]
+
+    data.insert(3, "SegEnd", data[data.columns[2]] + 30)
+    data.columns = ["Index", "Time", "SegStart", "SegEnd", "AWC"]
 
     os.chdir("..")
-    return top_100_awc_data
+    return data
 
 
 def write_output(data: pd.DataFrame, filename: str):

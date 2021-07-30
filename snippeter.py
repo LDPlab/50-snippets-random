@@ -1,25 +1,27 @@
 from utils.data_tool import get_data, write_output
 from utils.randomizer import get_50_random_snippets
 from utils.file_explorer import get_files
+from utils.sampling_menu import get_user_sampling
 
 
 def main():
     '''
-    Main program for randomly sampling 50 non zero adult word count clips.
+    Main program for randomly sampling 50  clips.
     Controls execution flow for processing files and attempts to handle execution errors.
     '''
     print("Please ensure that the input files are in a folder labeled \"input\"")
     print("Supported input extensions: .xls, .xlsx, .csv | Default to .xls")
     print("Output extensions: .xlsx")
-    input("Press any key to start...")
 
-    files = get_files()
+    sampling_method = get_user_sampling()
+    files = get_files(sampling_method)
 
 
-    for [input_file, output_file] in files.items():
+    for [output_file, input_file] in files.items():
         print(f"\nProcessing {input_file}...")
         try:
-            processed_data = get_data(input_file)
+            is_random_sampling = "_50snippets_random" in output_file
+            processed_data = get_data(input_file, is_random_sampling)
         except ValueError:
             print(f"File extension for {input_file} is not supported")
             print("Please rerun the program and provide a valid extension (.xls, .xlsx, .csv)")
