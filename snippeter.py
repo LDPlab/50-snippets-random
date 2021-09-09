@@ -1,3 +1,4 @@
+from config.Columns import Columns
 from utils.data_tool import get_data, write_output
 from utils.randomizer import get_50_random_snippets
 from utils.file_explorer import get_files
@@ -13,25 +14,24 @@ def main():
     print("Supported input extensions: .xls, .xlsx, .csv | Default to .xls")
     print("Output extensions: .xlsx")
 
-    sampling_method = get_user_sampling()
-    files = get_files(sampling_method)
+    sampling_methods = get_user_sampling()
+    files = get_files(sampling_methods)
 
 
-    for [output_file, input_file] in files.items():
-        print(f"\nProcessing {input_file}...")
+    for file_info in files:
+        print(f"\nProcessing {file_info.input_filename}...")
         try:
-            is_random_sampling = "_50snippets_random" in output_file
-            processed_data = get_data(input_file, is_random_sampling)
+            processed_data = get_data(file_info)
         except ValueError:
-            print(f"File extension for {input_file} is not supported")
+            print(f"File extension for {file_info.input_filename} is not supported")
             print("Please rerun the program and provide a valid extension (.xls, .xlsx, .csv)")
             continue
 
-        randomized_data = get_50_random_snippets(processed_data)
+        randomized_data = get_50_random_snippets(processed_data, file_info.column_index == Columns.TVN)
 
-        print(f"Writing {output_file} file...")
-        write_output(randomized_data, output_file)
-        print(f"Output file {output_file} has been generated")
+        print(f"Writing {file_info.output_filename} file...")
+        write_output(randomized_data, file_info.output_filename)
+        print(f"Output file {file_info.output_filename} has been generated")
 
     print("\nAll files processed.")
     input("Press any key to exit...")

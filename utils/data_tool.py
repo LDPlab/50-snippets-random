@@ -1,8 +1,33 @@
 import pandas as pd
 import os
+from models.FileSampleInfo import FileSampleInfo
+from config.Columns import Columns
 
 
-def get_data(filename: str, is_random: bool) -> pd.DataFrame:
+def read_file(filename: str):
+    '''
+    Reads csv or excel files, throws error if not correct file type.
+
+    Parameters:
+    filename : str
+        The filename to use to load DataFrame.
+
+    Returns:
+    Pandas DataFrame
+        Loaded dataframe from file.
+    '''
+    os.chdir("input")
+    if filename.endswith(".csv"):
+        data = pd.read_csv(filename)
+    elif filename.endswith(".xls") or filename.endswith(".xlsx"):
+        data = pd.read_excel(filename)
+    else:
+        raise ValueError("File extension not supported")
+    os.chdir("..")
+    return data
+
+
+def get_data(file_info: FileSampleInfo) -> pd.DataFrame:
     '''
     Generates a Pandas DataFrame from input file.
 
@@ -17,28 +42,27 @@ def get_data(filename: str, is_random: bool) -> pd.DataFrame:
     Pandas DataFrame
         A DataFrame of clips by desired sampling method from file data.
     '''
-    os.chdir("input")
-    if filename[-4:] == ".csv":
-        data = pd.read_csv(filename)
-    elif filename[-4:] == ".xls" or filename[-5:] == ".xlsx":
-        data = pd.read_excel(filename)
-    else:
-        raise ValueError("File extension not supported")
+    data = read_file(file_info.input_filename)
 
-    for col in data.columns[4:]:
-        del data[col]
+    if file_info.column_index == Columns.AWC:
+        if file_info.is_random:
+            print("Filtering out snippets with 0 AWC...")
+            data = data[data[data.columns[Columns.AWC.value]] > 0]
+        else:
+            print("Getting top 100 snippets by AWC...")
+            data = data.sort_values(by=data.columns[Columns.AWC.value], ascending=False)[:100]
 
-    if is_random:
-        print("Filtering out clips with 0 AWC...")
-        data = data[data[data.columns[3]] > 0]
-    else:
-        print("Getting top 100 clips by AWC...")
-        data = data.sort_values(by=data.columns[3], ascending=False)[:100]
+        for col in data.columns[4:]:
+            del data[col]
+    elif file_info.column_index == Columns.TVN:
+        print("Getting top 100 snippets by TVN...")
+        data = data.sort_values(by=data.columns[Columns.TVN.value], ascending=False)[:100]
 
-    data.insert(3, "SegEnd", data[data.columns[2]] + 30)
-    data.columns = ["Index", "Time", "SegStart", "SegEnd", "AWC"]
+        for col in data.columns[3:-1]:
+            del data[col]
 
-    os.chdir("..")
+    data.insert(3, "SegEnd", data[data.columns[Columns.SEGMENT_START.value]] + 30)
+    data.columns = ["Index", "Time", "SegStart", "SegEnd", file_info.column_index.name]
     return data
 
 
