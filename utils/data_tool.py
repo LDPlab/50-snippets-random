@@ -22,6 +22,7 @@ def read_file(filename: str):
     elif filename.endswith(".xls") or filename.endswith(".xlsx"):
         data = pd.read_excel(filename)
     else:
+        os.chdir("..")
         raise ValueError("File extension not supported")
     os.chdir("..")
     return data

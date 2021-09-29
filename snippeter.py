@@ -24,7 +24,6 @@ def main():
             processed_data = get_data(file_info)
         except ValueError:
             print(f"File extension for {file_info.input_filename} is not supported")
-            print("Please rerun the program and provide a valid extension (.xls, .xlsx, .csv)")
             continue
 
         randomized_data = get_50_random_snippets(processed_data, file_info.column_index == Columns.TVN)
