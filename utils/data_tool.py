@@ -28,16 +28,15 @@ def read_file(filename: str):
     return data
 
 
-def get_data(file_info: FileSampleInfo) -> pd.DataFrame:
+def get_data(file_info: FileSampleInfo, top_limit = 100) -> pd.DataFrame:
     '''
     Generates a Pandas DataFrame from input file.
 
     Parameters:
     filename : str
         The filename to use to load DataFrame.
-    is_random : int
-        True: Sample from all nonzero AWC clips.
-        False: Sample from top 100 clips by AWC.
+    top_limit : int
+        The top number of clips to select for given column.
 
     Returns:
     Pandas DataFrame
@@ -50,14 +49,14 @@ def get_data(file_info: FileSampleInfo) -> pd.DataFrame:
             print("Filtering out snippets with 0 AWC...")
             data = data[data[data.columns[Columns.AWC.value]] > 0]
         else:
-            print("Getting top 100 snippets by AWC...")
-            data = data.sort_values(by=data.columns[Columns.AWC.value], ascending=False)[:100]
+            print(f"Getting top {top_limit} snippets by AWC...")
+            data = data.sort_values(by=data.columns[Columns.AWC.value], ascending=False)[:top_limit]
 
         for col in data.columns[4:]:
             del data[col]
     elif file_info.column_index == Columns.TVN:
-        print("Getting top 100 snippets by TVN...")
-        data = data.sort_values(by=data.columns[Columns.TVN.value], ascending=False)[:100]
+        print(f"Getting top {top_limit} snippets by TVN...")
+        data = data.sort_values(by=data.columns[Columns.TVN.value], ascending=False)[:top_limit]
 
         for col in data.columns[3:-1]:
             del data[col]

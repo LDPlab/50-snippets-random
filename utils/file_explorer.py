@@ -3,7 +3,7 @@ from config.Columns import Columns
 from models.FileSampleInfo import FileSampleInfo
 
 
-def get_files(sampling_methods: str) -> list:
+def get_files(sampling_methods: str) -> list[ FileSampleInfo ]:
     '''
     Searches through input directory for all files to process and creates a dictonary
     where the keys are the input filename and the values are the output filename.

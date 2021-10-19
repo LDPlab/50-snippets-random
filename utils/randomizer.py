@@ -30,6 +30,5 @@ def get_50_random_snippets(data: pd.DataFrame, is_tvn: bool) -> pd.DataFrame:
         filter_end = random_row.values[0][2] + TIME_FILTER_IN_SECONDS
         data = data[(data["SegStart"] > filter_end) | (data["SegStart"] < filter_start)]
         output = output.append(random_row)
-    print(f"Was able to select {len(output)} snippets")
 
     return output.sort_values(by="SegStart")
