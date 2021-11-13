@@ -28,7 +28,7 @@ def read_file(filename: str):
     return data
 
 
-def get_data(file_info: FileSampleInfo, top_limit = 100) -> pd.DataFrame:
+def get_data(file_info: FileSampleInfo) -> pd.DataFrame:
     '''
     Generates a Pandas DataFrame from input file.
 
@@ -43,26 +43,27 @@ def get_data(file_info: FileSampleInfo, top_limit = 100) -> pd.DataFrame:
         A DataFrame of clips by desired sampling method from file data.
     '''
     data = read_file(file_info.input_filename)
+    ctc_column = data[data.columns[4]]
 
     if file_info.column_index == Columns.AWC:
         if file_info.is_random:
             print("Filtering out snippets with 0 AWC...")
             data = data[data[data.columns[Columns.AWC.value]] > 0]
         else:
-            print(f"Getting top {top_limit} snippets by AWC...")
-            data = data.sort_values(by=data.columns[Columns.AWC.value], ascending=False)[:top_limit]
-
-        for col in data.columns[4:]:
+            print(f"Getting top 50 snippets by AWC...")
+            data = data.sort_values(by=data.columns[Columns.AWC.value], ascending=False)
+        for col in data.columns[4:-1]:
             del data[col]
     elif file_info.column_index == Columns.TVN:
-        print(f"Getting top {top_limit} snippets by TVN...")
-        data = data.sort_values(by=data.columns[Columns.TVN.value], ascending=False)[:top_limit]
-
-        for col in data.columns[3:-1]:
+        print(f"Getting top 50 snippets by TVN...")
+        data = data.sort_values(by=data.columns[Columns.TVN.value], ascending=False)
+        for col in data.columns[4:-1]:
             del data[col]
 
+
     data.insert(3, "SegEnd", data[data.columns[Columns.SEGMENT_START.value]] + 30)
-    data.columns = ["Index", "Time", "SegStart", "SegEnd", file_info.column_index.name]
+    data.insert(len(data.columns), "CTC", ctc_column)
+    data.columns = ["Index", "Time", "SegStart", "SegEnd", "AWC", "TVN", "CTC"]
     return data
 
 

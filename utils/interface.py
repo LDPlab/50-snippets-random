@@ -1,6 +1,6 @@
 from config.Columns import Columns
 from utils.data_tool import get_data, write_output
-from utils.randomizer import get_50_random_snippets
+from utils.randomizer import get_50_random_snippets, get_50_ordered_snippets
 from utils.file_explorer import get_files
 from utils.sampling_menu import get_user_sampling
 
@@ -11,7 +11,7 @@ def interface():
     Controls execution flow for processing files and attempts to handle execution errors.
     '''
     print("Please ensure that the input files are in a folder labeled \"input\"")
-    print("Supported input extensions: .xls, .xlsx, .csv | Default to .xls")
+    print("Supported input extensions: .xls, .xlsx, .csv")
     print("Output extensions: .xlsx")
 
     sampling_methods = get_user_sampling()
@@ -25,14 +25,11 @@ def interface():
             print(f"File extension for {file_info.input_filename} is not supported")
             continue
 
-        sampled_data = get_50_random_snippets(data, file_info.column_index == Columns.TVN)
-
-        print(f"Was able to select {len(sampled_data)} snippets")
-        if len(sampled_data) < 50 and not file_info.is_random:
-            print("Expanding sample size to top 200 clips")
-            expanded_data = get_data(file_info, 200)
-            sampled_data = get_50_random_snippets(expanded_data, file_info.column_index == Columns.TVN)
-            print(f"Was able to select {len(sampled_data)} snippets")
+        print(file_info.is_random)
+        if file_info.is_random:
+            sampled_data = get_50_random_snippets(data, file_info.column_index == Columns.TVN)
+        else:
+            sampled_data = get_50_ordered_snippets(data, file_info.column_index == Columns.TVN)
 
         print(f"Writing {file_info.output_filename} file...")
         write_output(sampled_data, file_info.output_filename)
