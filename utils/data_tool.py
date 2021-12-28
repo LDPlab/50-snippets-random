@@ -18,12 +18,21 @@ def read_file(filename: str):
     '''
     os.chdir("input")
     if filename.endswith(".csv"):
-        data = pd.read_csv(filename)
+        try:
+            data = pd.read_csv(filename)
+        except Exception as e:
+            os.chdir("..")
+            raise e
     elif filename.endswith(".xls") or filename.endswith(".xlsx"):
-        data = pd.read_excel(filename)
+        try:
+            data = pd.read_excel(filename)
+        except Exception as e:
+            os.chdir("..")
+            raise e
     else:
         os.chdir("..")
         raise ValueError("File extension not supported")
+
     os.chdir("..")
     return data
 
@@ -59,7 +68,6 @@ def get_data(file_info: FileSampleInfo) -> pd.DataFrame:
         data = data.sort_values(by=data.columns[Columns.TVN.value], ascending=False)
         for col in data.columns[4:-1]:
             del data[col]
-
 
     data.insert(3, "SegEnd", data[data.columns[Columns.SEGMENT_START.value]] + 30)
     data.insert(len(data.columns), "CTC", ctc_column)

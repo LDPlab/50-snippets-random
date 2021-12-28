@@ -24,8 +24,9 @@ def interface():
         except ValueError:
             print(f"File extension for {file_info.input_filename} is not supported")
             continue
+        except Exception:
+            print(f"Error loading file {file_info.input_filename}, please convert to .xlsx and try again")
 
-        print(file_info.is_random)
         if file_info.is_random:
             sampled_data = get_50_random_snippets(data, file_info.column_index == Columns.TVN)
         else:
