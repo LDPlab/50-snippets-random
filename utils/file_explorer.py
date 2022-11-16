@@ -30,14 +30,13 @@ def get_files(sampling_methods: str) -> list[ FileSampleInfo ]:
         input("Press any key to exit...")
         exit(0)
 
-    os.chdir("input")
-    for file in os.listdir():
+    for file in os.listdir("input"):
         split_filename = file.split('.')
         original_filename = split_filename[-2]
         split_filename[-1] = "xlsx"
 
         if "1" in sampling_methods:
-            split_filename[-2] = original_filename + "_50snippets"
+            split_filename[-2] = original_filename + "_50snippets_awc"
             files.append(
                 FileSampleInfo(
                     input_filename=file,
@@ -45,13 +44,14 @@ def get_files(sampling_methods: str) -> list[ FileSampleInfo ]:
                     column_index=Columns.AWC,
                     is_random=False))
         if "2" in sampling_methods:
-            split_filename[-2] = original_filename + "_50snippets_random"
+            split_filename[-2] = original_filename + "_100snippets_awc"
             files.append(
                 FileSampleInfo(
                     input_filename=file,
                     output_filename='.'.join(split_filename),
                     column_index=Columns.AWC,
-                    is_random=True))
+                    is_random=False,
+                    count=100))
         if "3" in sampling_methods:
             split_filename[-2] = original_filename + "_50snippets_tvn"
             files.append(
@@ -60,6 +60,13 @@ def get_files(sampling_methods: str) -> list[ FileSampleInfo ]:
                     output_filename='.'.join(split_filename),
                     column_index=Columns.TVN,
                     is_random=False))
+        if "4" in sampling_methods:
+            split_filename[-2] = original_filename + "_50snippets_random"
+            files.append(
+                FileSampleInfo(
+                    input_filename=file,
+                    output_filename='.'.join(split_filename),
+                    column_index=Columns.AWC,
+                    is_random=True))
 
-    os.chdir("..")
     return files

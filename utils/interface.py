@@ -1,6 +1,6 @@
 from config.Columns import Columns
 from utils.data_tool import get_data, write_output
-from utils.randomizer import get_50_random_snippets, get_50_ordered_snippets
+from utils.randomizer import get_random_snippets, get_ordered_snippets
 from utils.file_explorer import get_files
 from utils.sampling_menu import get_user_sampling
 
@@ -28,9 +28,9 @@ def interface():
             print(f"Error loading file {file_info.input_filename}, please convert to .xlsx and try again")
 
         if file_info.is_random:
-            sampled_data = get_50_random_snippets(data, file_info.column_index == Columns.TVN)
+            sampled_data = get_random_snippets(data, file_info.column_index == Columns.TVN, file_info.count)
         else:
-            sampled_data = get_50_ordered_snippets(data, file_info.column_index == Columns.TVN)
+            sampled_data = get_ordered_snippets(data, file_info.column_index == Columns.TVN, file_info.count)
 
         print(f"Writing {file_info.output_filename} file...")
         write_output(sampled_data, file_info.output_filename)

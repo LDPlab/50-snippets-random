@@ -16,24 +16,14 @@ def read_file(filename: str):
     Pandas DataFrame
         Loaded dataframe from file.
     '''
-    os.chdir("input")
+    filepath = f"input/{filename}"
     if filename.endswith(".csv"):
-        try:
-            data = pd.read_csv(filename)
-        except Exception as e:
-            os.chdir("..")
-            raise e
+        data = pd.read_csv(filepath)
     elif filename.endswith(".xls") or filename.endswith(".xlsx"):
-        try:
-            data = pd.read_excel(filename)
-        except Exception as e:
-            os.chdir("..")
-            raise e
+        data = pd.read_excel(filepath)
     else:
-        os.chdir("..")
         raise ValueError("File extension not supported")
 
-    os.chdir("..")
     return data
 
 
@@ -85,6 +75,4 @@ def write_output(data: pd.DataFrame, filename: str):
     filename : str
         The name of the output file.
     '''
-    os.chdir("output")
-    data.to_excel(filename, index=False)
-    os.chdir("..")
+    data.to_excel(f"output/{filename}", index=False)
