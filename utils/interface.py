@@ -26,11 +26,12 @@ def interface():
             continue
         except Exception:
             print(f"Error loading file {file_info.input_filename}, please convert to .xlsx and try again")
+            continue
 
         if file_info.is_random:
-            sampled_data = get_random_snippets(data, file_info.column_index == Columns.TVN, file_info.count)
+            sampled_data = get_random_snippets(data, file_info.column_index, file_info.count)
         else:
-            sampled_data = get_ordered_snippets(data, file_info.column_index == Columns.TVN, file_info.count)
+            sampled_data = get_ordered_snippets(data, file_info.column_index, file_info.count)
 
         print(f"Writing {file_info.output_filename} file...")
         write_output(sampled_data, file_info.output_filename)
