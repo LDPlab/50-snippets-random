@@ -15,7 +15,7 @@ def get_random_snippets(data: pd.DataFrame, columns: Columns, count: int) -> pd.
 
     Returns
     Pandas DataFrame
-        DataFrame of the 50 random snippets in order by start time.
+        DataFrame of the requested number of random snippets in order by start time.
     '''
     output = pd.DataFrame(columns=data.columns)
 
@@ -46,7 +46,7 @@ def get_ordered_snippets(data: pd.DataFrame, column: Columns, count: int) -> pd.
 
     Returns
     Pandas DataFrame
-        DataFrame of the 50 random snippets in order by start time.
+        DataFrame of the requested number of ordered snippets.
     '''
     output = pd.DataFrame(columns=data.columns)
 

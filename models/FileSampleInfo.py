@@ -6,7 +6,7 @@ class FileSampleInfo:
                  output_filename: str,
                  column_index: Columns,
                  is_random: bool,
-                 count: int = 50):
+                 count: int = 55):
         self.input_filename = input_filename
         self.output_filename = output_filename
         self.column_index = column_index

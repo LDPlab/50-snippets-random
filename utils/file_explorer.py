@@ -36,7 +36,7 @@ def get_files(sampling_methods: str) -> list[ FileSampleInfo ]:
         split_filename[-1] = "xlsx"
 
         if "1" in sampling_methods:
-            split_filename[-2] = original_filename + "_50snippets_awc"
+            split_filename[-2] = original_filename + "_55snippets_awc"
             files.append(
                 FileSampleInfo(
                     input_filename=file,
@@ -44,16 +44,16 @@ def get_files(sampling_methods: str) -> list[ FileSampleInfo ]:
                     column_index=Columns.AWC,
                     is_random=False))
         if "2" in sampling_methods:
-            split_filename[-2] = original_filename + "_100snippets_awc"
+            split_filename[-2] = original_filename + "_105snippets_awc"
             files.append(
                 FileSampleInfo(
                     input_filename=file,
                     output_filename='.'.join(split_filename),
                     column_index=Columns.AWC,
                     is_random=False,
-                    count=100))
+                    count=105))
         if "3" in sampling_methods:
-            split_filename[-2] = original_filename + "_50snippets_tvn"
+            split_filename[-2] = original_filename + "_55snippets_tvn"
             files.append(
                 FileSampleInfo(
                     input_filename=file,
@@ -61,7 +61,7 @@ def get_files(sampling_methods: str) -> list[ FileSampleInfo ]:
                     column_index=Columns.TVN,
                     is_random=False))
         if "4" in sampling_methods:
-            split_filename[-2] = original_filename + "_50snippets_random"
+            split_filename[-2] = original_filename + "_55snippets_random"
             files.append(
                 FileSampleInfo(
                     input_filename=file,

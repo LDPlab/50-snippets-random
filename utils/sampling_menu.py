@@ -7,9 +7,9 @@ def get_user_sampling() -> int:
         The sampling selection from user.
     """
     print("\nSelect desired sampling method:")
-    print("1 Top 50 clips by AWC")
-    print("2 Top 100 clips by AWC")
-    print("3 Top 50 clips by TVN")
+    print("1 Top 55 clips by AWC")
+    print("2 Top 105 clips by AWC")
+    print("3 Top 55 clips by TVN")
     print("4 Random 50 with non zero AWC")
     sampling_method = input("Please enter desired sampling: ")
 
@@ -19,9 +19,9 @@ def get_user_sampling() -> int:
           "4" not in sampling_method:
         print("Invalid selection.")
         print("\nSelect desired sampling method:")
-        print("1 Top 50 clips by AWC")
-        print("2 Top 100 clips by AWC")
-        print("3 Top 50 clips by TVN")
+        print("1 Top 55 clips by AWC")
+        print("2 Top 105 clips by AWC")
+        print("3 Top 55 clips by TVN")
         print("4 Random 50 with non zero AWC")
         sampling_method = input("Please enter desired sampling: ")
 
