@@ -1,9 +1,10 @@
 import os
 from config.Columns import Columns
 from models.FileSampleInfo import FileSampleInfo
+from models.SampleOption import SampleOption
 
 
-def get_files(sampling_methods: str) -> list[ FileSampleInfo ]:
+def get_files(sampling_methods: list[SampleOption]) -> list[FileSampleInfo]:
     '''
     Searches through input directory for all files to process and creates a dictonary
     where the keys are the input filename and the values are the output filename.
@@ -35,38 +36,15 @@ def get_files(sampling_methods: str) -> list[ FileSampleInfo ]:
         original_filename = split_filename[-2]
         split_filename[-1] = "xlsx"
 
-        if "1" in sampling_methods:
-            split_filename[-2] = original_filename + "_55snippets_awc"
+        for method in sampling_methods:
+            split_filename[-2] = original_filename + method.file_modifier
             files.append(
                 FileSampleInfo(
                     input_filename=file,
                     output_filename='.'.join(split_filename),
-                    column_index=Columns.AWC,
-                    is_random=False))
-        if "2" in sampling_methods:
-            split_filename[-2] = original_filename + "_105snippets_awc"
-            files.append(
-                FileSampleInfo(
-                    input_filename=file,
-                    output_filename='.'.join(split_filename),
-                    column_index=Columns.AWC,
-                    is_random=False,
-                    count=105))
-        if "3" in sampling_methods:
-            split_filename[-2] = original_filename + "_55snippets_tvn"
-            files.append(
-                FileSampleInfo(
-                    input_filename=file,
-                    output_filename='.'.join(split_filename),
-                    column_index=Columns.TVN,
-                    is_random=False))
-        if "4" in sampling_methods:
-            split_filename[-2] = original_filename + "_55snippets_random"
-            files.append(
-                FileSampleInfo(
-                    input_filename=file,
-                    output_filename='.'.join(split_filename),
-                    column_index=Columns.AWC,
-                    is_random=True))
+                    column_index=method.column,
+                    time_filter_in_seconds=method.time_filter_in_seconds,
+                    count=method.count,
+                    is_random=method.is_random))
 
     return files

@@ -1,4 +1,3 @@
-from config.Columns import Columns
 from utils.data_tool import get_data, write_output
 from utils.randomizer import get_random_snippets, get_ordered_snippets
 from utils.file_explorer import get_files
@@ -29,9 +28,15 @@ def interface():
             continue
 
         if file_info.is_random:
-            sampled_data = get_random_snippets(data, file_info.column_index, file_info.count)
+            sampled_data = get_random_snippets(data,
+                                               file_info.column_index,
+                                               file_info.count,
+                                               file_info.time_filter_in_seconds)
         else:
-            sampled_data = get_ordered_snippets(data, file_info.column_index, file_info.count)
+            sampled_data = get_ordered_snippets(data,
+                                                file_info.column_index,
+                                                file_info.count,
+                                                file_info.time_filter_in_seconds)
 
         print(f"Writing {file_info.output_filename} file...")
         write_output(sampled_data, file_info.output_filename)

@@ -42,23 +42,14 @@ def get_data(file_info: FileSampleInfo) -> pd.DataFrame:
         A DataFrame of clips by desired sampling method from file data.
     '''
     data = read_file(file_info.input_filename)
-    ctc_column = data[data.columns[Columns.TURN_COUNT.value]]
 
-    if file_info.column_index == Columns.AWC:
-        if file_info.is_random:
-            data = data[data[data.columns[Columns.AWC.value]] > 0]
-        else:
-            data = data.sort_values(by=data.columns[Columns.AWC.value], ascending=False)
-        for col in data.columns[Columns.TURN_COUNT.value:-1]:
-            del data[col]
-    elif file_info.column_index == Columns.TVN:
-        data = data.sort_values(by=data.columns[Columns.TVN.value], ascending=False)
-        for col in data.columns[Columns.TURN_COUNT.value:-1]:
-            del data[col]
+    if file_info.is_random:
+        data = data[data[data.columns[file_info.column_index.value]] > 0]
+    else:
+        data = data.sort_values(by=data.columns[file_info.column_index.value], ascending=False)
 
     data.insert(2, "SegEnd", data[data.columns[Columns.SEGMENT_START.value]] + 30)
-    data.insert(len(data.columns), "CTC", ctc_column)
-    data.columns = ["Index", "SegStart", "SegEnd", "AWC", "TVN", "CTC"]
+    data.columns = ["Index", "SegStart", "SegEnd", "AWC", "CTC", "CVC", "FAN", "MAN", "TVN"]
     return data
 
 
