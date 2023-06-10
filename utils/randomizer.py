@@ -19,7 +19,11 @@ def get_random_snippets(data: pd.DataFrame, column: Columns, count: int, time_fi
     '''
     output = pd.DataFrame(columns=data.columns)
 
-    print(f"Selecting {count} random snippets with nonzero {column} at least +/- {time_filter} seconds apart...")
+    if column is not None:
+        print(f"Selecting {count} random snippets with nonzero {column} at least +/- {time_filter} seconds apart...")
+    else:
+        print(f"Selecting {count} random snippets at least +/- {time_filter} seconds apart...")
+
     while len(output) < count and len(data) > 0:
         random_index = random.randint(0, len(data))
         random_row = data[random_index:random_index+1]

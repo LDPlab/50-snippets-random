@@ -2,6 +2,8 @@ from models.SampleOption import SampleOption
 from .Columns import Columns
 
 sample_options = {
+    "0a": SampleOption("0a", "Random 55 clips", None, "_55snippets_random", 55, 180, True),
+    "0b": SampleOption("0b", "Random 105 clips", None, "_105snippets_random", 105, 180, True),
     "1a": SampleOption("1a", "AWC Top 55 clips", Columns.AWC, "_55snippets_awc", 55, 180),
     "1b": SampleOption("1b", "AWC Top 105 clips", Columns.AWC, "_105snippets_awc", 105, 120),
     "1c": SampleOption("1c", "Random 55 with non zero AWC", Columns.AWC, "_55snippets_awc_random", 55, 180, True),

@@ -43,9 +43,9 @@ def get_data(file_info: FileSampleInfo) -> pd.DataFrame:
     '''
     data = read_file(file_info.input_filename)
 
-    if file_info.is_random:
+    if file_info.is_random and file_info.column_index is not None:
         data = data[data[data.columns[file_info.column_index.value]] > 0]
-    else:
+    elif file_info.column_index is not None:
         data = data.sort_values(by=data.columns[file_info.column_index.value], ascending=False)
 
     data.insert(2, "SegEnd", data[data.columns[Columns.SEGMENT_START.value]] + 30)
